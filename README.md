@@ -51,3 +51,13 @@ The Postman collection is included in the root as `Koffeekodes.postman_collectio
 
 ## UI Design
 Built with Tailwind CSS using a custom Teal (`#4EC9B0`) and Black color scheme. Icons are from Lucide-React.
+
+---
+
+### 🌐 Live Deployment Notes
+
+*   **Backend**: Hosted on **Render** (Free Tier)
+*   **Frontend**: Hosted on **Vercel**
+
+> [!NOTE]
+> Since the backend is on a **free Render instance**, it will "sleep" after periods of inactivity. The **first request** may take **30-35 seconds** to respond while the server spins back up. Subsequent requests will be fast.
