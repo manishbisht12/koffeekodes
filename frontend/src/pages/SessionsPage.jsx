@@ -40,71 +40,87 @@ const SessionsPage = () => {
 
   if (loading) return (
     <div className="pt-32 px-6 max-w-7xl mx-auto flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
     </div>
   );
 
   return (
     <div className="pt-24 pb-12 px-6 max-w-7xl mx-auto">
-      <div className="mb-10 text-center lg:text-left">
-        <h1 className="text-4xl font-extrabold text-gray-900 flex items-center gap-3">
-          <ShieldCheck className="w-10 h-10 text-green-500" /> Active Sessions
+      <div className="mb-12 text-center lg:text-left">
+        <h1 className="text-4xl font-black text-gray-900 flex items-center justify-center lg:justify-start gap-4 tracking-tight">
+          <ShieldCheck className="w-12 h-12 text-primary" /> Active Sessions
         </h1>
-        <p className="text-gray-500 mt-2 text-lg">Manage all devices currently logged into your account</p>
+        <p className="text-gray-500 mt-3 text-lg font-medium max-w-2xl">Manage all devices currently logged into your account. Terminate any unknown sessions immediately.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {sessions.map((session) => (
-          <div key={session._id} className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group overflow-hidden">
+          <div key={session._id} className="bg-white border border-gray-100 rounded-[2.5rem] p-8 shadow-2xl hover:shadow-primary/5 transition-all duration-500 relative group overflow-hidden hover:border-primary/20">
             {session.jwtToken === user.token && (
-              <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-bl-xl uppercase tracking-tighter shadow-sm z-10">
-                This Session
+              <div className="absolute top-0 right-0 bg-gray-900 text-primary text-[10px] font-black px-5 py-2 rounded-bl-3xl uppercase tracking-widest shadow-lg border-b border-l border-primary/30 z-10">
+                Active Now
               </div>
             )}
             
-            <div className="flex items-start gap-4 mb-6">
-              <div className={`p-4 rounded-2xl ${session.os?.toLowerCase().includes('windows') || session.os?.toLowerCase().includes('mac') ? 'bg-indigo-50 text-indigo-600' : 'bg-green-50 text-green-600'}`}>
-                {session.os?.toLowerCase().includes('windows') || session.os?.toLowerCase().includes('mac') ? <Monitor className="w-7 h-7" /> : <Smartphone className="w-7 h-7" />}
+            <div className="flex items-start gap-5 mb-8">
+              <div className={`p-4 rounded-full shadow-xl transition-all duration-500 ${session.jwtToken === user.token ? 'bg-gray-900 text-primary border-2 border-primary' : 'bg-gray-50 text-gray-400 border border-gray-100 group-hover:bg-primary/5 group-hover:text-primary group-hover:border-primary/20'}`}>
+                {session.os?.toLowerCase().includes('windows') || session.os?.toLowerCase().includes('mac') ? <Monitor className="w-6 h-6" /> : <Smartphone className="w-6 h-6" />}
               </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-lg leading-snug">{session.browser || 'Unknown Browser'}</h3>
-                <p className="text-sm font-medium text-gray-500">{session.os || 'Unknown OS'}</p>
+              <div className="mt-1">
+                <h3 className="font-black text-gray-900 text-lg tracking-tight leading-tight uppercase">{session.browser || 'Unknown'}</h3>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1.5">{session.os || 'OS Unknown'}</p>
               </div>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-gray-50 mb-6">
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <MapPin className="w-4 h-4 text-rose-500" />
-                <span className="font-medium">{session.ipAddress}</span>
+            <div className="space-y-4 pt-6 border-t border-gray-50 mb-8">
+              <div className="flex items-center gap-3.5 text-sm text-gray-600 group/item">
+                <div className="p-2 bg-gray-50 rounded-lg group-hover/item:bg-gray-900 transition-colors">
+                  <MapPin className="w-4 h-4 text-gray-400 group-hover/item:text-primary" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">IP Address</p>
+                  <span className="font-bold tracking-tight text-gray-700">{session.ipAddress}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <Clock className="w-4 h-4 text-amber-500" />
-                <span className="font-medium">Started: {new Date(session.createdAt).toLocaleString()}</span>
+              <div className="flex items-center gap-3.5 text-sm text-gray-600 group/item">
+                <div className="p-2 bg-gray-50 rounded-lg group-hover/item:bg-gray-900 transition-colors">
+                  <Clock className="w-4 h-4 text-gray-400 group-hover/item:text-primary" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Login Time</p>
+                  <span className="font-bold tracking-tight text-gray-700">{new Date(session.createdAt).toLocaleDateString()} {new Date(session.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <Globe className="w-4 h-4 text-blue-500" />
-                <span className="font-medium">Last active: {new Date(session.lastActiveAt).toLocaleString()}</span>
+              <div className="flex items-center gap-3.5 text-sm text-gray-600 group/item">
+                <div className="p-2 bg-gray-50 rounded-lg group-hover/item:bg-gray-900 transition-colors">
+                  <Globe className="w-4 h-4 text-gray-400 group-hover/item:text-primary" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Last Activity</p>
+                  <span className="font-bold tracking-tight text-gray-700">{new Date(session.lastActiveAt).toLocaleDateString()} {new Date(session.lastActiveAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
               </div>
             </div>
 
             <button
               onClick={() => handleLogoutSession(session._id)}
               disabled={session.jwtToken === user.token}
-              className={`w-full py-3 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all duration-300 ${
+              className={`w-full py-4 rounded-xl flex items-center justify-center gap-3 font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 ${
                 session.jwtToken === user.token 
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50' 
-                  : 'bg-red-50 text-red-600 hover:bg-red-600 hover:text-white shadow-sm hover:shadow-red-200'
+                  ? 'bg-gray-50 text-gray-300 cursor-not-allowed border-2 border-transparent' 
+                  : 'bg-white text-red-600 border-2 border-red-50 hover:bg-red-500 hover:text-white hover:border-red-500 hover:-translate-y-1 active:translate-y-0 shadow-lg shadow-red-50'
               }`}
             >
               <LogOut className="w-4 h-4" />
-              {session.jwtToken === user.token ? 'Primary Session' : 'Logout Device'}
+              {session.jwtToken === user.token ? 'Primary Session' : 'Revoke Access'}
             </button>
           </div>
         ))}
         {sessions.length === 0 && (
-          <div className="col-span-full py-20 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-            <Monitor className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-500">No active sessions found</h3>
+          <div className="col-span-full py-24 text-center bg-gray-50 rounded-[3rem] border-4 border-dashed border-gray-100">
+            <Monitor className="w-20 h-20 text-gray-200 mx-auto mb-6" />
+            <h3 className="text-2xl font-black text-gray-300 uppercase tracking-widest">No Active Nodes Found</h3>
+            <p className="text-gray-400 mt-2 font-medium">This is unusual. Please refresh to check system status.</p>
           </div>
         )}
       </div>

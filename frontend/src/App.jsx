@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+        <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans selection:bg-primary/30 selection:text-gray-900">
           <Navbar />
           <main className="flex-grow">
             <Routes>
@@ -38,10 +38,16 @@ function App() {
             </Routes>
           </main>
           <Toaster 
-            position="top-right" 
+            position="top-center" 
             toastOptions={{
-              className: 'rounded-2xl bg-white/90 backdrop-blur-xl border border-white/20 shadow-2xl font-bold py-4 px-6 text-gray-800 text-sm',
+              className: 'rounded-2xl bg-gray-900 text-white border-2 border-primary shadow-[0_20px_50px_rgba(78,201,176,0.15)] font-bold py-4 px-6 text-sm',
               duration: 4000,
+              success: {
+                iconTheme: {
+                  primary: '#4EC9B0',
+                  secondary: '#000',
+                },
+              },
             }} 
           />
         </div>
