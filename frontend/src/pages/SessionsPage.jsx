@@ -11,7 +11,7 @@ const SessionsPage = () => {
 
   const fetchSessions = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/sessions/active', {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/sessions/active`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setSessions(data);
@@ -24,7 +24,7 @@ const SessionsPage = () => {
 
   const handleLogoutSession = async (sessionId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/sessions/${sessionId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/sessions/${sessionId}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       toast.success('Session logged out');
